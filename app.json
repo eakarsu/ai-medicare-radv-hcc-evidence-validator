@@ -1,0 +1,1359 @@
+{
+  "id": "ai-medicare-radv-hcc-evidence-validator",
+  "title": "RADV Evidence Validator",
+  "tagline": "Defensible HCC evidence, audit readiness, and repayment-risk intelligence",
+  "industry": "Medicare Advantage Risk Adjustment",
+  "port": 4511,
+  "accent": "#2563eb",
+  "valueLabel": "Exposure reviewed",
+  "value": "$18.6M",
+  "workflows": [
+    {
+      "id": "hcc-validation",
+      "title": "HCC Evidence Validation",
+      "description": "Validate submitted diagnoses against acceptable medical-record evidence.",
+      "fields": [
+        {
+          "key": "memberId",
+          "label": "Member Reference",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "paymentYear",
+          "label": "Payment Year",
+          "type": "number",
+          "required": true
+        },
+        {
+          "key": "hccCode",
+          "label": "HCC Code",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "clinicalEvidence",
+          "label": "Clinical Evidence",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "memberId": "MBR-104728",
+            "paymentYear": 2025,
+            "hccCode": "HCC019",
+            "clinicalEvidence": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "memberId": "MBR-208315",
+            "paymentYear": 2024,
+            "hccCode": "HCC037",
+            "clinicalEvidence": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "memberId": "MBR-319804",
+            "paymentYear": 2023,
+            "hccCode": "HCC226",
+            "clinicalEvidence": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "record-chase",
+      "title": "Medical Record Chase",
+      "description": "Prioritize and track provider record requests against audit deadlines.",
+      "fields": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "memberId",
+          "label": "Member Reference",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "serviceDate",
+          "label": "Service Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "key": "requestStatus",
+          "label": "Request Status",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Not requested",
+            "Requested",
+            "Received",
+            "Deficient"
+          ]
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "provider": "Northlake Internal Medicine",
+            "memberId": "MBR-104728",
+            "serviceDate": "2026-09-08",
+            "requestStatus": "Deficient"
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "provider": "Riverside Cardiology Group",
+            "memberId": "MBR-208315",
+            "serviceDate": "2026-08-19",
+            "requestStatus": "Deficient"
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "provider": "Pinecrest Specialty Clinic",
+            "memberId": "MBR-319804",
+            "serviceDate": "2026-08-10",
+            "requestStatus": "Deficient"
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "coding-review",
+      "title": "Coding Accuracy Review",
+      "description": "Assess ICD-10 coding, specificity, signatures, and face-to-face support.",
+      "fields": [
+        {
+          "key": "diagnosis",
+          "label": "Diagnosis Code",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "recordType",
+          "label": "Record Type",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Progress note",
+            "Discharge summary",
+            "Consult",
+            "Assessment"
+          ]
+        },
+        {
+          "key": "signatureStatus",
+          "label": "Signature Status",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Valid",
+            "Missing",
+            "Late",
+            "Unclear"
+          ]
+        },
+        {
+          "key": "reviewRationale",
+          "label": "Review Rationale",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "diagnosis": "E11.22",
+            "recordType": "Discharge summary",
+            "signatureStatus": "Late",
+            "reviewRationale": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "diagnosis": "I50.32",
+            "recordType": "Discharge summary",
+            "signatureStatus": "Missing",
+            "reviewRationale": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "diagnosis": "J44.1",
+            "recordType": "Discharge summary",
+            "signatureStatus": "Late",
+            "reviewRationale": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "audit-sample",
+      "title": "RADV Sample Manager",
+      "description": "Manage sampled members, requested records, validation status, and deadlines.",
+      "fields": [
+        {
+          "key": "auditYear",
+          "label": "Audit Year",
+          "type": "number",
+          "required": true
+        },
+        {
+          "key": "sampleId",
+          "label": "Sample ID",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "submissionDeadline",
+          "label": "Submission Deadline",
+          "type": "date",
+          "required": true
+        },
+        {
+          "key": "sampleStatus",
+          "label": "Sample Status",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Open",
+            "Records due",
+            "Ready",
+            "Submitted"
+          ]
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "auditYear": 2025,
+            "sampleId": "Sample ID STD-2026-104",
+            "submissionDeadline": "2026-09-08",
+            "sampleStatus": "Submitted"
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "auditYear": 2024,
+            "sampleId": "Sample ID RISK-2026-227",
+            "submissionDeadline": "2026-08-19",
+            "sampleStatus": "Submitted"
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "auditYear": 2023,
+            "sampleId": "Sample ID EXC-2026-319",
+            "submissionDeadline": "2026-08-10",
+            "sampleStatus": "Submitted"
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "repayment",
+      "title": "Repayment Exposure Modeling",
+      "description": "Estimate unsupported-HCC repayment exposure and confidence ranges.",
+      "fields": [
+        {
+          "key": "contract",
+          "label": "MA Contract",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "unsupportedHccs",
+          "label": "Unsupported HCC Count",
+          "type": "number",
+          "required": true
+        },
+        {
+          "key": "estimatedExposure",
+          "label": "Estimated Exposure",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "methodology",
+          "label": "Methodology",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "contract": "H1234",
+            "unsupportedHccs": 125,
+            "estimatedExposure": 285000,
+            "methodology": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "contract": "H5678",
+            "unsupportedHccs": 975,
+            "estimatedExposure": 875000,
+            "methodology": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "contract": "H9012",
+            "unsupportedHccs": 41,
+            "estimatedExposure": 142500,
+            "methodology": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "provider-pattern",
+      "title": "Provider Pattern Detection",
+      "description": "Detect unsupported diagnosis concentration and recurring documentation defects.",
+      "fields": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "memberCount",
+          "label": "Member Count",
+          "type": "number",
+          "required": true
+        },
+        {
+          "key": "pattern",
+          "label": "Observed Pattern",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "key": "riskLevel",
+          "label": "Risk Level",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Low",
+            "Moderate",
+            "High",
+            "Critical"
+          ]
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "provider": "Northlake Internal Medicine",
+            "memberCount": 125,
+            "pattern": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "riskLevel": "Critical"
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "provider": "Riverside Cardiology Group",
+            "memberCount": 975,
+            "pattern": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "riskLevel": "Critical"
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "provider": "Pinecrest Specialty Clinic",
+            "memberCount": 41,
+            "pattern": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "riskLevel": "Critical"
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "appeal-package",
+      "title": "Audit Appeal Package",
+      "description": "Build indexed rebuttal packages with evidence and clinical rationale.",
+      "fields": [
+        {
+          "key": "findingId",
+          "label": "Finding ID",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "appealBasis",
+          "label": "Appeal Basis",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Record overlooked",
+            "Coding interpretation",
+            "Signature evidence",
+            "Administrative error"
+          ]
+        },
+        {
+          "key": "supportingEvidence",
+          "label": "Supporting Evidence",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "key": "dueDate",
+          "label": "Due Date",
+          "type": "date",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "findingId": "Finding ID STD-2026-104",
+            "appealBasis": "Coding interpretation",
+            "supportingEvidence": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "dueDate": "2026-09-08"
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "findingId": "Finding ID RISK-2026-227",
+            "appealBasis": "Coding interpretation",
+            "supportingEvidence": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "dueDate": "2026-08-19"
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "findingId": "Finding ID EXC-2026-319",
+            "appealBasis": "Coding interpretation",
+            "supportingEvidence": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "dueDate": "2026-08-10"
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "readiness",
+      "title": "Audit Readiness Assessment",
+      "description": "Score controls, data lineage, record availability, and submission readiness.",
+      "fields": [
+        {
+          "key": "contract",
+          "label": "MA Contract",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "assessmentPeriod",
+          "label": "Assessment Period",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "controlGap",
+          "label": "Control Gap",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "key": "readinessScore",
+          "label": "Readiness Score",
+          "type": "number",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "contract": "H1234",
+            "assessmentPeriod": "Assessment Period STD-2026-104",
+            "controlGap": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "readinessScore": 88
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "contract": "H5678",
+            "assessmentPeriod": "Assessment Period RISK-2026-227",
+            "controlGap": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "readinessScore": 42
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "contract": "H9012",
+            "assessmentPeriod": "Assessment Period EXC-2026-319",
+            "controlGap": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "readinessScore": 67
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "id": "hcc-validation",
+      "title": "HCC Evidence Validation Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for hcc evidence validation.",
+      "table": "op_hcc_validation",
+      "columns": [
+        {
+          "key": "memberId",
+          "label": "Member Reference",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_memberId"
+        },
+        {
+          "key": "paymentYear",
+          "label": "Payment Year",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_paymentYear"
+        },
+        {
+          "key": "hccCode",
+          "label": "HCC Code",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_hccCode"
+        },
+        {
+          "key": "clinicalEvidence",
+          "label": "Clinical Evidence",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_clinicalEvidence"
+        }
+      ]
+    },
+    {
+      "id": "record-chase",
+      "title": "Medical Record Chase Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for medical record chase.",
+      "table": "op_record_chase",
+      "columns": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_provider"
+        },
+        {
+          "key": "memberId",
+          "label": "Member Reference",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_memberId"
+        },
+        {
+          "key": "serviceDate",
+          "label": "Service Date",
+          "type": "date",
+          "required": true,
+          "dbKey": "data_serviceDate"
+        },
+        {
+          "key": "requestStatus",
+          "label": "Request Status",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Not requested",
+            "Requested",
+            "Received",
+            "Deficient"
+          ],
+          "dbKey": "data_requestStatus"
+        }
+      ]
+    },
+    {
+      "id": "coding-review",
+      "title": "Coding Accuracy Review Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for coding accuracy review.",
+      "table": "op_coding_review",
+      "columns": [
+        {
+          "key": "diagnosis",
+          "label": "Diagnosis Code",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_diagnosis"
+        },
+        {
+          "key": "recordType",
+          "label": "Record Type",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Progress note",
+            "Discharge summary",
+            "Consult",
+            "Assessment"
+          ],
+          "dbKey": "data_recordType"
+        },
+        {
+          "key": "signatureStatus",
+          "label": "Signature Status",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Valid",
+            "Missing",
+            "Late",
+            "Unclear"
+          ],
+          "dbKey": "data_signatureStatus"
+        },
+        {
+          "key": "reviewRationale",
+          "label": "Review Rationale",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_reviewRationale"
+        }
+      ]
+    },
+    {
+      "id": "audit-sample",
+      "title": "RADV Sample Manager Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for radv sample manager.",
+      "table": "op_audit_sample",
+      "columns": [
+        {
+          "key": "auditYear",
+          "label": "Audit Year",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_auditYear"
+        },
+        {
+          "key": "sampleId",
+          "label": "Sample ID",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_sampleId"
+        },
+        {
+          "key": "submissionDeadline",
+          "label": "Submission Deadline",
+          "type": "date",
+          "required": true,
+          "dbKey": "data_submissionDeadline"
+        },
+        {
+          "key": "sampleStatus",
+          "label": "Sample Status",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Open",
+            "Records due",
+            "Ready",
+            "Submitted"
+          ],
+          "dbKey": "data_sampleStatus"
+        }
+      ]
+    },
+    {
+      "id": "repayment",
+      "title": "Repayment Exposure Modeling Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for repayment exposure modeling.",
+      "table": "op_repayment",
+      "columns": [
+        {
+          "key": "contract",
+          "label": "MA Contract",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_contract"
+        },
+        {
+          "key": "unsupportedHccs",
+          "label": "Unsupported HCC Count",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_unsupportedHccs"
+        },
+        {
+          "key": "estimatedExposure",
+          "label": "Estimated Exposure",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_estimatedExposure"
+        },
+        {
+          "key": "methodology",
+          "label": "Methodology",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_methodology"
+        }
+      ]
+    },
+    {
+      "id": "provider-pattern",
+      "title": "Provider Pattern Detection Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for provider pattern detection.",
+      "table": "op_provider_pattern",
+      "columns": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_provider"
+        },
+        {
+          "key": "memberCount",
+          "label": "Member Count",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_memberCount"
+        },
+        {
+          "key": "pattern",
+          "label": "Observed Pattern",
+          "type": "textarea",
+          "required": true,
+          "dbKey": "data_pattern"
+        },
+        {
+          "key": "riskLevel",
+          "label": "Risk Level",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Low",
+            "Moderate",
+            "High",
+            "Critical"
+          ],
+          "dbKey": "data_riskLevel"
+        }
+      ]
+    },
+    {
+      "id": "appeal-package",
+      "title": "Audit Appeal Package Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for audit appeal package.",
+      "table": "op_appeal_package",
+      "columns": [
+        {
+          "key": "findingId",
+          "label": "Finding ID",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_findingId"
+        },
+        {
+          "key": "appealBasis",
+          "label": "Appeal Basis",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Record overlooked",
+            "Coding interpretation",
+            "Signature evidence",
+            "Administrative error"
+          ],
+          "dbKey": "data_appealBasis"
+        },
+        {
+          "key": "supportingEvidence",
+          "label": "Supporting Evidence",
+          "type": "textarea",
+          "required": true,
+          "dbKey": "data_supportingEvidence"
+        },
+        {
+          "key": "dueDate",
+          "label": "Due Date",
+          "type": "date",
+          "required": false,
+          "dbKey": "data_dueDate"
+        }
+      ]
+    },
+    {
+      "id": "readiness",
+      "title": "Audit Readiness Assessment Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for audit readiness assessment.",
+      "table": "op_readiness",
+      "columns": [
+        {
+          "key": "contract",
+          "label": "MA Contract",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_contract"
+        },
+        {
+          "key": "assessmentPeriod",
+          "label": "Assessment Period",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_assessmentPeriod"
+        },
+        {
+          "key": "controlGap",
+          "label": "Control Gap",
+          "type": "textarea",
+          "required": true,
+          "dbKey": "data_controlGap"
+        },
+        {
+          "key": "readinessScore",
+          "label": "Readiness Score",
+          "type": "number",
+          "required": false,
+          "dbKey": "data_readinessScore"
+        }
+      ]
+    },
+    {
+      "id": "ma-contracts",
+      "title": "MA Contract Portfolio",
+      "description": "Contracts, plans, enrollment, payment years, and audit ownership.",
+      "table": "op_ma_contracts",
+      "columns": [
+        {
+          "key": "contractId",
+          "label": "Contract ID",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_contractId"
+        },
+        {
+          "key": "planName",
+          "label": "Plan Name",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_planName"
+        },
+        {
+          "key": "enrollment",
+          "label": "Enrollment",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_enrollment"
+        },
+        {
+          "key": "paymentYear",
+          "label": "Payment Year",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_paymentYear"
+        }
+      ]
+    },
+    {
+      "id": "provider-directory",
+      "title": "Provider Evidence Directory",
+      "description": "Provider specialties, locations, record channels, and response performance.",
+      "table": "op_provider_directory",
+      "columns": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_provider"
+        },
+        {
+          "key": "npi",
+          "label": "NPI",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_npi"
+        },
+        {
+          "key": "specialty",
+          "label": "Specialty",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_specialty"
+        },
+        {
+          "key": "responseRate",
+          "label": "Record Response %",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_responseRate"
+        }
+      ]
+    },
+    {
+      "id": "record-inventory",
+      "title": "Medical Record Inventory",
+      "description": "Record locations, formats, completeness, signatures, and retrieval status.",
+      "table": "op_record_inventory",
+      "columns": [
+        {
+          "key": "memberId",
+          "label": "Member Reference",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_memberId"
+        },
+        {
+          "key": "recordType",
+          "label": "Record Type",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_recordType"
+        },
+        {
+          "key": "pageCount",
+          "label": "Page Count",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_pageCount"
+        },
+        {
+          "key": "completeness",
+          "label": "Completeness",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Complete",
+            "Partial",
+            "Missing",
+            "Conflicting"
+          ],
+          "dbKey": "data_completeness"
+        }
+      ]
+    },
+    {
+      "id": "submission-batches",
+      "title": "CMS Submission Batches",
+      "description": "Audit batches, record counts, validation, deadlines, and receipts.",
+      "table": "op_submission_batches",
+      "columns": [
+        {
+          "key": "batchId",
+          "label": "Batch ID",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_batchId"
+        },
+        {
+          "key": "auditYear",
+          "label": "Audit Year",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_auditYear"
+        },
+        {
+          "key": "recordCount",
+          "label": "Record Count",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_recordCount"
+        },
+        {
+          "key": "submissionDate",
+          "label": "Submission Date",
+          "type": "date",
+          "required": true,
+          "dbKey": "data_submissionDate"
+        }
+      ]
+    }
+  ],
+  "domainProduct": {
+    "home": "RADV Audit Operations",
+    "context": "HCC substantiation, medical-record retrieval, coding validity, extrapolated repayment exposure, and CMS submission control.",
+    "features": [
+      {
+        "id": "hcc-evidence",
+        "title": "HCC Evidence Adjudication",
+        "description": "Determine whether each submitted HCC is supported by an acceptable date of service, diagnosis, signature, and face-to-face record.",
+        "view": "evidence",
+        "modules": [
+          "hcc-validation",
+          "record-inventory"
+        ],
+        "actions": [
+          {
+            "id": "substantiate-hcc",
+            "label": "Substantiate HCC",
+            "nextStatus": "Approved",
+            "auditDetail": "Substantiated the HCC with acceptable medical-record evidence."
+          },
+          {
+            "id": "delete-hcc",
+            "label": "Recommend HCC Deletion",
+            "nextStatus": "Review",
+            "auditDetail": "Recommended deletion because documentation did not substantiate the submitted HCC."
+          }
+        ]
+      },
+      {
+        "id": "record-chase",
+        "title": "Medical Record Chase Command",
+        "description": "Prioritize provider outreach, request channels, aging, deficiencies, and audit deadlines for sampled members.",
+        "view": "deadline",
+        "modules": [
+          "record-chase",
+          "provider-directory"
+        ],
+        "actions": [
+          {
+            "id": "send-escalation",
+            "label": "Escalate Provider Chase",
+            "nextStatus": "Investigating",
+            "auditDetail": "Escalated an overdue provider record request through the approved channel."
+          },
+          {
+            "id": "accept-record",
+            "label": "Accept Received Record",
+            "nextStatus": "Approved",
+            "auditDetail": "Accepted and indexed the received medical record for validation."
+          }
+        ]
+      },
+      {
+        "id": "coding-validation",
+        "title": "Coding & Signature Validation",
+        "description": "Review ICD-10 specificity, MEAT support, record type, credentials, and signature validity.",
+        "view": "control",
+        "modules": [
+          "coding-review",
+          "record-inventory"
+        ],
+        "actions": [
+          {
+            "id": "validate-coding",
+            "label": "Validate Coding Evidence",
+            "nextStatus": "Approved",
+            "auditDetail": "Validated diagnosis coding, credentials, and signature evidence."
+          },
+          {
+            "id": "route-coder-review",
+            "label": "Route to Senior Coder",
+            "nextStatus": "Review",
+            "auditDetail": "Escalated conflicting diagnosis or signature evidence to a senior coder."
+          }
+        ]
+      },
+      {
+        "id": "repayment-exposure",
+        "title": "Repayment & Extrapolation Exposure",
+        "description": "Model unsupported HCC value, sample error, contract-level exposure, and reserve recommendations.",
+        "view": "reconciliation",
+        "modules": [
+          "repayment",
+          "ma-contracts"
+        ],
+        "actions": [
+          {
+            "id": "record-overpayment",
+            "label": "Record Identified Overpayment",
+            "nextStatus": "Review",
+            "auditDetail": "Recorded an identified overpayment and initiated repayment governance."
+          },
+          {
+            "id": "approve-reserve",
+            "label": "Approve Exposure Reserve",
+            "nextStatus": "Approved",
+            "auditDetail": "Approved the audit exposure reserve with documented assumptions."
+          }
+        ]
+      },
+      {
+        "id": "cms-submission",
+        "title": "CMS Submission Control",
+        "description": "Validate record inventory, naming, batch counts, deadlines, receipts, and final evidence lineage before transmission.",
+        "view": "board",
+        "modules": [
+          "readiness",
+          "submission-batches"
+        ],
+        "actions": [
+          {
+            "id": "validate-batch",
+            "label": "Validate Submission Batch",
+            "nextStatus": "Review",
+            "auditDetail": "Validated batch completeness, naming, and evidence lineage."
+          },
+          {
+            "id": "release-cms",
+            "label": "Release to CMS",
+            "nextStatus": "Approved",
+            "auditDetail": "Released the controlled submission batch and retained delivery receipt."
+          }
+        ]
+      }
+    ]
+  },
+  "integrations": [
+    {
+      "id": "integration-1",
+      "name": "CMS audit exchange",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-2",
+      "name": "Claims warehouse",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-3",
+      "name": "Medical record repository",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-4",
+      "name": "Provider portal",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-5",
+      "name": "Coding engine",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    }
+  ],
+  "featureCount": 40,
+  "seededRecords": 300,
+  "demoUsers": 3,
+  "apiPort": 5511,
+  "dbName": "profit_ai_medicare_radv_hcc_evidence_validator"
+}
