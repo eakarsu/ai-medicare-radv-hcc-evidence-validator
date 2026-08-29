@@ -7,6 +7,15 @@
   "accent": "#2563eb",
   "valueLabel": "Exposure reviewed",
   "value": "$18.6M",
+  "commercialExtension": {
+    "title": "RADV Exposure & Evidence Lab",
+    "summary": "Estimate unsupported-diagnosis exposure and stage a defensible medical-record retrieval and coder-review pilot.",
+    "baselineLabel": "Risk-adjusted revenue", "volumeLabel": "Members reviewed", "unitValueLabel": "Average risk-adjusted revenue", "opportunityRateLabel": "Unsupported exposure rate", "captureRateLabel": "Defensible resolution rate",
+    "defaults": { "volume": 48000, "unitValue": 11000, "opportunityRate": 2.5, "captureRate": 65 },
+    "pricing": "Per member or sampled chart with enterprise tiers for contract-level audit and extrapolation analysis.",
+    "milestones": ["Import one audited sample and HCC universe", "Retrieve and hash source medical records", "Complete independent coder evidence review", "Approve extrapolation scenarios and response package"],
+    "connectors": [{"name":"Risk adjustment warehouse","status":"Pilot","purpose":"Member, encounter, diagnosis, and HCC lineage","evidence":"Submission version and payment-year provenance"},{"name":"Medical record retrieval","status":"Planned","purpose":"Chart request, receipt, completeness, and custody","evidence":"Source, service date, hash, and access history"},{"name":"Coder review system","status":"Planned","purpose":"Independent evidence dispositions","evidence":"Coder credentials, rationale, guideline version, and sign-off"}]
+  },
   "workflows": [
     {
       "id": "hcc-validation",
