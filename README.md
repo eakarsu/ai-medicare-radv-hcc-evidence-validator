@@ -1,22 +1,58 @@
-# RADV Evidence Validator
+# RADV Evidence Command
 
-Defensible HCC evidence, audit readiness, and repayment-risk intelligence.
+Connects diagnoses to medical-record evidence, finds unsupported HCC codes, assembles RADV audit submissions, and estimates repayment exposure across CMS audit years.
 
-Full React, Node/Express, PostgreSQL, and OpenRouter implementation with 5 native business capabilities, 10 stateful domain decisions, 8 specialized AI workflows, 12 physical domain tables, 300 seeded records, reports, clickable audit history, integration controls, three local roles, and three full-field scenario fillers per AI feature.
+Stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, Prisma,
+PostgreSQL, NextAuth credentials, and OpenRouter for AI workflows. Structure
+and conventions mirror the `beautyhqio` reference application.
 
-## Configure and run
+## Features
+- Diagnosis-to-medical-record evidence linking
+- Unsupported HCC detection with confidence scoring
+- RADV audit submission assembly
+- Repayment exposure estimation
+- CMS audit-year tracking (2026 schedule)
+- Encounter-data vs. chart-review reconciliation
+- Coding appeal and audit-finding management
+- Vendor file intake and compliance tasks
+
+## Local setup
+
+1. Install Node.js 22 and PostgreSQL 17.
+2. Copy `.env.example` to `.env` and set `DATABASE_URL` plus
+   `NEXTAUTH_SECRET`. Never use the example values in production.
+3. Run:
 
 ```bash
-./start.sh
+npm install
+npx prisma migrate dev --name init
+npm run db:seed
+npm run dev
 ```
 
-Open <http://127.0.0.1:4511>. `start.sh` automatically loads the protected portfolio-level `../.openrouter.env` file, then an optional app-local `.env` override. It creates the local PostgreSQL database when needed, runs migrations, preserves existing seeded data, starts the Node API on `5511`, and starts Vite on `4511`.
+Then open <http://localhost:4610> and sign in with a seeded demo account
+(`admin@ai-medicare-radv-hcc-evidence-validator.local` / `Demo!23456`).
 
-## Validate
+## Release gates
 
 ```bash
-node scripts/validate_app.mjs
-node scripts/smoke_test.mjs
+npm run typecheck
+npm run lint
+npm run build
 ```
 
-Both `.env` files are ignored. OpenRouter is called only from the backend; the API key is never sent to React.
+## AI workflows
+
+AI features call OpenRouter from API routes only; the browser never receives
+the API key. Set `OPENROUTER_API_KEY` (and optionally `OPENROUTER_MODEL`) in
+`.env`. Without a key the AI endpoints return a deterministic local analysis
+so the screens remain demonstrable offline.
+
+## Roles
+
+- `ADMIN` — full access, manages users and configuration
+- `MANAGER` — creates and edits domain records, runs AI workflows
+- `ANALYST` — read-mostly access with reporting
+
+Every mutation is recorded in the `AuditLog` table with actor, action, and
+timestamp, mirroring the auditability expectations of regulated buyers.

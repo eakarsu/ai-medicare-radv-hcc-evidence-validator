@@ -1,0 +1,214 @@
+// Generated schema — modeled after beautyhqio conventions.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(ANALYST)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  ANALYST
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actorName String?
+  action    String
+  entity    String
+  entityId  String?
+  detail    String?
+  createdAt DateTime @default(now())
+}
+
+model AuditYear {
+  id        String   @id @default(cuid())
+  name String
+  year Int
+  payer String
+  status String
+  dueDate DateTime?
+  sampledMembers Int
+  estimatedExposure Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  members Member[]
+  diagnosiss Diagnosis[]
+  evidenceDocuments EvidenceDocument[]
+  chartReviews ChartReview[]
+  hccGaps HccGap[]
+  submissions Submission[]
+  repaymentEstimates RepaymentEstimate[]
+  codingAppeals CodingAppeal[]
+  vendorFiles VendorFile[]
+  findings Finding[]
+  complianceTasks ComplianceTask[]
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  memberRef String
+  plan String
+  pcpName String
+  rafScore Float
+  status String
+  dob DateTime?
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Diagnosis {
+  id        String   @id @default(cuid())
+  icd10 String
+  description String
+  hccCategory String
+  memberRef String
+  status String
+  paymentYearImpact Float
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EvidenceDocument {
+  id        String   @id @default(cuid())
+  title String
+  source String
+  memberRef String
+  status String
+  serviceDate DateTime?
+  providerNpi String?
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChartReview {
+  id        String   @id @default(cuid())
+  memberRef String
+  reviewer String
+  result String
+  supportedDx Int
+  unsupportedDx Int
+  completedAt DateTime?
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HccGap {
+  id        String   @id @default(cuid())
+  memberRef String
+  hccCategory String
+  gapReason String
+  severity String
+  dollarImpact Float
+  status String
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Submission {
+  id        String   @id @default(cuid())
+  name String
+  cmsBatch String
+  status String
+  submittedAt DateTime?
+  recordsIncluded Int
+  trackingId String?
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RepaymentEstimate {
+  id        String   @id @default(cuid())
+  name String
+  lowEstimate Float
+  midEstimate Float
+  highEstimate Float
+  status String
+  methodology String
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CodingAppeal {
+  id        String   @id @default(cuid())
+  memberRef String
+  icd10 String
+  reason String
+  status String
+  submittedAt DateTime?
+  outcome String?
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VendorFile {
+  id        String   @id @default(cuid())
+  fileName String
+  vendor String
+  recordType String
+  recordCount Int
+  status String
+  receivedAt DateTime?
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Finding {
+  id        String   @id @default(cuid())
+  title String
+  category String
+  severity String
+  owner String
+  status String
+  exposure Float
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ComplianceTask {
+  id        String   @id @default(cuid())
+  title String
+  owner String
+  status String
+  dueDate DateTime?
+  priority String
+  notes String?
+  auditYearId String?
+  auditYear AuditYear? @relation(fields: [auditYearId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
