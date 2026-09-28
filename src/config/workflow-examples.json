@@ -1,0 +1,98 @@
+{
+  "hcc-validate": [
+    {
+      "id": "example-1",
+      "label": "Documented diagnosis",
+      "values": {
+        "icd10": "E11.9 — illustrative code; verify applicable official mapping",
+        "hccCategory": "Not determined; select the official payment-year model.",
+        "chartEvidence": "Fictional note documents diabetes assessment and management; review full signed encounter and provider eligibility.",
+        "serviceDate": "2025-06-12"
+      }
+    },
+    {
+      "id": "example-2",
+      "label": "History-only mention",
+      "values": {
+        "icd10": "I50.9 — illustrative code; verify applicable official mapping",
+        "hccCategory": "Not determined; no unsupported category assignment.",
+        "chartEvidence": "Fictional problem list mentions heart failure, but the supplied encounter has no assessment or management evidence.",
+        "serviceDate": "2025-09-03"
+      }
+    },
+    {
+      "id": "example-3",
+      "label": "Conflicting notes",
+      "values": {
+        "icd10": "J44.9 — illustrative code; verify applicable official mapping",
+        "hccCategory": "Not determined; clinical and model review required.",
+        "chartEvidence": "Fictional records conflict about a chronic respiratory diagnosis; obtain dated signed source documents.",
+        "serviceDate": "2025-11-20"
+      }
+    }
+  ],
+  "exposure-estimate": [
+    {
+      "id": "example-1",
+      "label": "Small audit sample",
+      "values": {
+        "auditedMembers": "100",
+        "unsupportedRate": "8% in a fictional reviewed sample; not a population estimate.",
+        "avgPmpm": "900 USD, illustrative average only",
+        "paymentYear": "2026; no extrapolation without an approved methodology."
+      }
+    },
+    {
+      "id": "example-2",
+      "label": "Missing methodology",
+      "values": {
+        "auditedMembers": "40",
+        "unsupportedRate": "5% in a fictional sample with unknown selection bias.",
+        "avgPmpm": "1100 USD; category-level payment impact not supplied.",
+        "paymentYear": "2025; sampling design and model version missing."
+      }
+    },
+    {
+      "id": "example-3",
+      "label": "Year-specific review",
+      "values": {
+        "auditedMembers": "250",
+        "unsupportedRate": "12% in a fictional reviewed cohort; uncertainty not calculated.",
+        "avgPmpm": "850 USD; not an actuarial adjustment.",
+        "paymentYear": "2027; official payment-year parameters must be supplied by a configured service."
+      }
+    }
+  ],
+  "evidence-gap-scan": [
+    {
+      "id": "example-1",
+      "label": "Unsigned encounter",
+      "values": {
+        "memberRef": "EXAMPLE-MEMBER-101",
+        "diagnoses": "Illustrative diabetes diagnosis; official mapping not provided.",
+        "encounters": "Fictional encounter on 2025-06-12 lacks a signed provider note.",
+        "payer": "Example plan A; use only evidence linked to this member."
+      }
+    },
+    {
+      "id": "example-2",
+      "label": "Missing follow-up",
+      "values": {
+        "memberRef": "EXAMPLE-MEMBER-202",
+        "diagnoses": "Illustrative chronic respiratory diagnosis.",
+        "encounters": "Fictional history entry and an unrelated follow-up; supporting assessment not supplied.",
+        "payer": "Example plan B; request complete dated encounter evidence."
+      }
+    },
+    {
+      "id": "example-3",
+      "label": "Subject mismatch review",
+      "values": {
+        "memberRef": "EXAMPLE-MEMBER-303",
+        "diagnoses": "Illustrative heart failure diagnosis requiring source review.",
+        "encounters": "Fictional upload may reference another member; resolve linkage before assessment.",
+        "payer": "Example plan C; do not merge evidence across members."
+      }
+    }
+  ]
+}

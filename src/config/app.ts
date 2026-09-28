@@ -124,23 +124,23 @@ export const entities: Record<string, EntityConfig> = {
 export const workflows: WorkflowConfig[] = [
   {
     slug: "hcc-validate",
-    title: "HCC Evidence Validator",
+    title: "Draft: HCC Evidence Validator",
     description: "Validate a submitted diagnosis against chart evidence.",
-    prompt: "You are a Medicare risk-adjustment coder. Evaluate whether the ICD-10 diagnosis is supported by documented chart evidence per RADV standards. Identify missing MEAT elements and unsupported-HCC risk.",
+    prompt: "Draft a chart-evidence review with source quotations, service dates and missing documentation. Do not adjudicate clinical validity, invent a diagnosis mapping, or claim that a checklist establishes RADV compliance. Versioned coding rules and qualified human review are required.",
     fields: ["icd10", "hccCategory", "chartEvidence", "serviceDate"],
   },
   {
     slug: "exposure-estimate",
-    title: "Repayment Exposure Estimator",
+    title: "Draft: Repayment Exposure Estimator",
     description: "Estimate repayment exposure for a RADV audit year.",
-    prompt: "You are a healthcare actuary. Estimate RADV repayment exposure from sampled-member error rates, extrapolation rules, and payment-year RAF impact.",
+    prompt: "Describe supplied repayment exposure assumptions and gaps. Do not invent an actuarial estimate, extrapolation rule, or liability without a versioned calculation model and supporting sample evidence.",
     fields: ["auditedMembers", "unsupportedRate", "avgPmpm", "paymentYear"],
   },
   {
     slug: "evidence-gap-scan",
-    title: "Evidence Gap Scanner",
+    title: "Draft: Evidence Gap Scanner",
     description: "Scan a member profile for missing documentation.",
-    prompt: "You are a clinical documentation specialist. Given the member's diagnoses and documented encounters, identify unsupported HCCs and the specific chart evidence to obtain.",
+    prompt: "Compare the selected member diagnosis records with selected linked chart documents and encounters. List evidence gaps with source identifiers. Do not infer undocumented diagnoses or treat presence alone as clinical support.",
     fields: ["memberRef", "diagnoses", "encounters", "payer"],
   },
 ];

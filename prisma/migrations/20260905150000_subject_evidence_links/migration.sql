@@ -1,0 +1,8 @@
+ALTER TABLE "Diagnosis" ADD COLUMN "memberId" TEXT;
+ALTER TABLE "Diagnosis" ADD CONSTRAINT "Diagnosis_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "Member"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EvidenceDocument" ADD COLUMN "memberId" TEXT;
+ALTER TABLE "EvidenceDocument" ADD CONSTRAINT "EvidenceDocument_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "Member"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ChartReview" ADD COLUMN "memberId" TEXT;
+ALTER TABLE "ChartReview" ADD CONSTRAINT "ChartReview_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "Member"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "HccGap" ADD COLUMN "memberId" TEXT;
+ALTER TABLE "HccGap" ADD CONSTRAINT "HccGap_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "Member"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,0 +1,569 @@
+{
+  "AuditYear": {
+    "name": "AuditYear",
+    "fields": [
+      {
+        "name": "name",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "year",
+        "kind": "number",
+        "required": true,
+        "integer": true
+      },
+      {
+        "name": "payer",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "dueDate",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "sampledMembers",
+        "kind": "number",
+        "required": true,
+        "integer": true
+      },
+      {
+        "name": "estimatedExposure",
+        "kind": "number",
+        "required": true
+      }
+    ]
+  },
+  "Member": {
+    "name": "Member",
+    "fields": [
+      {
+        "name": "memberRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "plan",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "pcpName",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "rafScore",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "dob",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "Diagnosis": {
+    "name": "Diagnosis",
+    "fields": [
+      {
+        "name": "icd10",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "hccCategory",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "memberRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "paymentYearImpact",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      },
+      {
+        "name": "memberId",
+        "kind": "string",
+        "required": false,
+        "relation": "Member"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "EvidenceDocument": {
+    "name": "EvidenceDocument",
+    "fields": [
+      {
+        "name": "title",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "source",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "memberRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "serviceDate",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "providerNpi",
+        "kind": "string",
+        "required": false
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      },
+      {
+        "name": "memberId",
+        "kind": "string",
+        "required": false,
+        "relation": "Member"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "ChartReview": {
+    "name": "ChartReview",
+    "fields": [
+      {
+        "name": "memberRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "reviewer",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "result",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "supportedDx",
+        "kind": "number",
+        "required": true,
+        "integer": true
+      },
+      {
+        "name": "unsupportedDx",
+        "kind": "number",
+        "required": true,
+        "integer": true
+      },
+      {
+        "name": "completedAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      },
+      {
+        "name": "memberId",
+        "kind": "string",
+        "required": false,
+        "relation": "Member"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "HccGap": {
+    "name": "HccGap",
+    "fields": [
+      {
+        "name": "memberRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "hccCategory",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "gapReason",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "severity",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "dollarImpact",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      },
+      {
+        "name": "memberId",
+        "kind": "string",
+        "required": false,
+        "relation": "Member"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "Submission": {
+    "name": "Submission",
+    "fields": [
+      {
+        "name": "name",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "cmsBatch",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "submittedAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "recordsIncluded",
+        "kind": "number",
+        "required": true,
+        "integer": true
+      },
+      {
+        "name": "trackingId",
+        "kind": "string",
+        "required": false
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "RepaymentEstimate": {
+    "name": "RepaymentEstimate",
+    "fields": [
+      {
+        "name": "name",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "lowEstimate",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "midEstimate",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "highEstimate",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "methodology",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "CodingAppeal": {
+    "name": "CodingAppeal",
+    "fields": [
+      {
+        "name": "memberRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "icd10",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "reason",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "submittedAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "outcome",
+        "kind": "string",
+        "required": false
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "VendorFile": {
+    "name": "VendorFile",
+    "fields": [
+      {
+        "name": "fileName",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "vendor",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "recordType",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "recordCount",
+        "kind": "number",
+        "required": true,
+        "integer": true,
+        "min": 0
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "receivedAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "Finding": {
+    "name": "Finding",
+    "fields": [
+      {
+        "name": "title",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "category",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "severity",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "owner",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "exposure",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  },
+  "ComplianceTask": {
+    "name": "ComplianceTask",
+    "fields": [
+      {
+        "name": "title",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "owner",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "dueDate",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "priority",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "notes",
+        "kind": "string",
+        "required": false
+      },
+      {
+        "name": "auditYearId",
+        "kind": "string",
+        "required": false,
+        "relation": "AuditYear"
+      }
+    ],
+    "parent": {
+      "field": "auditYearId",
+      "entity": "AuditYear"
+    }
+  }
+}
